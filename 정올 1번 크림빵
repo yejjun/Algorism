@@ -1,0 +1,21 @@
+N, K, P = map(int, input().split())
+arr = list(map(int, input().split()))
+cnt = 0
+T = 0
+A = 0
+
+for i in range(N*K):
+    if A == 1:
+        continue
+
+    if arr[i] == 0:
+        T += 1
+    if T == P:
+        A = 1
+        N -= 1
+
+    if (i+1)%K == 0:
+        T = 0
+        A = 0
+
+print(N)
