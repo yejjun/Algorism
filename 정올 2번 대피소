@@ -1,0 +1,32 @@
+N, K = map(int, input().split())
+a = []
+arr = []
+
+for i in range(N):
+    a = list(map(int, input().split()))
+    arr.append(a)
+
+large = 0
+
+for i in range(N):
+    for j in range(N):
+                
+        X = arr[i][0]
+        Y = arr[i][1]
+
+        len_X = X-arr[j][0]
+        len_Y = Y-arr[j][1]
+
+        if len_Y < 0:
+            len_Y *= -1
+        if len_X < 0:
+            len_X *= -1
+
+        distance = len_X + len_Y
+
+        if distance > large:
+            large = distance
+
+print(large)
+
+    
