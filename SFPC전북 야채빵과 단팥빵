@@ -1,0 +1,140 @@
+import datetime
+
+def get_Day_of_week(y,m,d):
+    days = [4, 3, 2, 1, 0, 6, 5] # 금요일까지 걸리는 일
+    return days[datetime.date(y,m,d).weekday()]  # 요일 계산
+
+def yun(year):
+    if (year%400 == 0) or ((year%4 ==0) and (year%100 != 0)): #윤년 판단.
+        return 1
+    else:
+        return 0
+    
+
+Ya_Bread = 0
+Dan_Bread = 0
+
+
+start_data = input() # 시작하는 날
+last_data = input() # 끝나는 날
+start_list = list(map(int, start_data.split("."))) # 리스트에 [년, 월, 일]로 저장
+last_list = list(map(int, start_data.split(".")))
+
+now_year = start_list[0] # 현재 년도
+last_year = last_list[0] # 끝나는 년도
+
+now_month = start_list[1] # 현재 월
+last_month = last_list[1]  # 끝나는 월
+
+now_day = start_list[2] # 현재 일
+last_day = last_list[2] # 끝나는 일
+
+for_friday = get_Day_of_week(now_year, now_month, now_day) # 금요일까지의 일수
+
+thirty_one = [1, 3, 5, 7, 9, 10, 12]
+thirty = [4, 6, 8, 11]
+
+#행사 날짜가 1주일도 안되는 경우.
+if now_year == last_year and now_month == last_month and (last_day-now_day) <= 7:
+    gap = last_day-now_day
+    if gap < for_friday:
+        caution = 1 
+
+#해당 일에서 금요일까지 이동했을때 다음달로 이동하는지 판단하는 코드.
+if now_month == 12:
+    if (now_day + for_friday) > 31:
+        now_year += 1
+        now_month = 1
+        now_day = (now_day + for_friday - 31)
+    else:
+        now_day += for_friday
+if now_month in thirty:
+    if (now_day + for_friday) > 30:
+        now_month = 1
+        now_day = (now_day + for_friday - 30)
+    else:
+        now_day += for_friday
+elif now_month in thirty_one:
+    if (now_day + for_friday) > 31:
+        now_month = 1
+        now_day = (now_day + for_friday - 31)
+    else:
+        now_day += for_friday
+elif now_month == 2:
+    if yun(now_year):
+        if (now_day + for_friday) > 29:
+            now_month = 1
+            now_day = (now_day + for_friday - 29)
+        else:
+            now_day += for_friday
+    else:
+        if (now_day + for_friday) > 28:
+            now_month = 1
+            now_day = (now_day + for_friday - 28)
+        else:
+            now_day += for_friday
+
+
+#본 코드드
+
+for year in range(now_year, last_year+1):
+    
+
+    if yun(year): #윤년 판단.
+        for month in range(now_month, 13):
+            
+            if month >12:
+                break
+
+            if month in thirty_one:
+                while(now_day <= 31):
+                    Ya_Bread += now_month+now_day
+                    Dan_Bread += Ya_Bread*2
+                    now_day += 7
+                now_day -= 31
+            
+            elif month in thirty:
+                while(now_day <= 30):
+                    Ya_Bread += now_month+now_day
+                    Dan_Bread += Ya_Bread*2
+                    now_day += 7
+                now_day -= 30
+            
+            elif month == 2:
+                while(now_day <= 29):
+                    Ya_Bread += now_month+now_day
+                    Dan_Bread += Ya_Bread*2
+                    now_day += 7
+                now_day -= 29
+
+            
+    else:
+        for month in range(now_month, 13):
+            print(month)
+            if month in thirty_one:
+                while(now_day <= 31):
+                    Ya_Bread += month+now_day
+                    Dan_Bread += Ya_Bread*2
+                    now_day += 7
+                now_day -= 31
+            
+            elif month in thirty:
+                while(now_day <= 30):
+                    Ya_Bread += month+now_day
+                    Dan_Bread += Ya_Bread*2
+                    now_day += 7
+                now_day -= 30
+            
+            elif month == 2:
+                while(now_day <= 28):
+                    Ya_Bread += month+now_day
+                    Dan_Bread += Ya_Bread*2
+                    now_day += 7
+                now_day -= 28
+            
+    now_month = 1
+    now_year += 1
+
+
+
+print(Ya_Bread, Dan_Bread)
